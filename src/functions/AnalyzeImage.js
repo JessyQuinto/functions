@@ -1,16 +1,14 @@
 const { app } = require('@azure/functions');
-const { ComputerVisionClient } = require('@azure/ai-computer-vision');
-const { AzureKeyCredential } = require('@azure/core-auth');
+const { ComputerVisionClient } = require('@azure/cognitiveservices-computervision');
+const { CognitiveServicesCredentials } = require('@azure/ms-rest-js');
 
 // Leer las claves y el endpoint desde las variables de entorno
 const cognitiveServiceKey = process.env.COGNITIVE_KEY;
 const cognitiveServiceEndpoint = process.env.COGNITIVE_ENDPOINT;
 
 // Crear cliente de Azure Computer Vision
-const client = new ComputerVisionClient(
-    cognitiveServiceEndpoint,
-    new AzureKeyCredential(cognitiveServiceKey)
-);
+const credentials = new CognitiveServicesCredentials(cognitiveServiceKey);
+const client = new ComputerVisionClient(credentials, cognitiveServiceEndpoint);
 
 app.http('AnalyzeImage', {
     methods: ['GET', 'POST'],
